@@ -1,22 +1,29 @@
 import time
-import os
-import random
 import pandas as pd
 from selenium import webdriver 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from fake_useragent import UserAgent
 from logger_func import logger
 
 class sutochno_parser():
     @logger
     def __init__(self):
         options = webdriver.ChromeOptions()
+
         options.add_argument('--log-level=3') 
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         options.add_argument('--ignore-certificate-errors')
         options.add_argument('--ignore-ssl-errors')
+
+        ua = UserAgent()
+        options.add_argument(f'user-agent={ua.random}')
+        options.add_argument('--proxy-server=102.244.78.61:8086')
+        # 8.211.49.86:2000
+        # 85.90.207.232:3128
+
         self.driver = webdriver.Chrome(options=options)
 
         self.links_list = []
@@ -25,7 +32,7 @@ class sutochno_parser():
 
     @logger
     def accept_cookies(self):
-        clickable_element = WebDriverWait(self.driver, 5).until(
+        clickable_element = WebDriverWait(self.driver, 30).until(
             EC.element_to_be_clickable((By.ID, "modal-cookies-accept"))
         )
         clickable_element.click()
@@ -33,9 +40,10 @@ class sutochno_parser():
 
     @logger
     def get_links_on_the_page(self):
-        time.sleep(3)
 
-        elements = self.driver.find_elements(By.CSS_SELECTOR, 'a.card-content')
+        elements = WebDriverWait(self.driver, 30).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a.card-content'))
+        )
         for element in elements:
             self.links_list.append(element.get_attribute('href'))
         return f"Ссылки со страницы собраны успешно. Ссылок в списке: {len(self.links_list)}"
@@ -45,7 +53,7 @@ class sutochno_parser():
         selector = "ul > li.navigation:last-child div.pagination-arrow"
         
         try:
-            clickable_element = WebDriverWait(self.driver, 5).until(
+            clickable_element = WebDriverWait(self.driver, 30).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, selector))
             )
             clickable_element.click()
@@ -56,10 +64,14 @@ class sutochno_parser():
 
     @logger
     def get_info(self):
-        for link in (self.links_list[:5] + self.links_list[len(self.links_list) - 5:]):
+        # for link in (self.links_list[:5] + self.links_list[len(self.links_list) - 5:]):
+        for link in self.links_list:
             self.driver.get(link)
 
-            time.sleep(3)
+            time.sleep(4)
+            price_element = WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "span.sc-detail-map__location-address"))
+            )
 
             elements = self.driver.find_elements(By.CSS_SELECTOR, "span.sc-detail-params__item")
 
@@ -89,7 +101,6 @@ class sutochno_parser():
             address = address_element.text.strip()
 
             #section-aside > aside > div > div.sc-detail-aside-price > div > span.sc-detail-aside-price__cost
-            price_element = self.driver.find_element(By.CSS_SELECTOR, "span.sc-detail-aside-price__cost")
             price_clean = "".join(char for char in price_element.text if char.isdigit())
             price = int(price_clean) if price_clean else 0
 
