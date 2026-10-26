@@ -20,9 +20,14 @@ class sutochno_parser():
 
         ua = UserAgent()
         options.add_argument(f'user-agent={ua.random}')
-        options.add_argument('--proxy-server=102.244.78.61:8086')
-        # 8.211.49.86:2000
-        # 85.90.207.232:3128
+        options.add_argument('--proxy-server=120.232.115.57:17981')
+
+        # --- ОТКЛЮЧАЕМ КАРТИНКИ ДЛЯ ЭКОНОМИИ ВРЕМЕНИ (скопировал с ии, но тема вполне полезная)---
+        prefs = {
+            # 2 — это режим "блокировать". Блокируем картинки
+            "profile.managed_default_content_settings.images": 2,
+        }
+        options.add_experimental_option("prefs", prefs)
 
         self.driver = webdriver.Chrome(options=options)
 
@@ -41,9 +46,20 @@ class sutochno_parser():
     @logger
     def get_links_on_the_page(self):
 
-        elements = WebDriverWait(self.driver, 30).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'a.card-content'))
+        #контрим ленивую подгрузку
+        WebDriverWait(self.driver, 15).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'a.card-content'))
         )
+        
+
+        self.driver.execute_script("window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });")
+        
+        # Даем бесплатному прокси и скроллу 2 секунды доехать до низа и прогрузить верстку
+        time.sleep(2)
+
+
+        elements = self.driver.find_elements(By.CSS_SELECTOR, "a.card-content")
+
         for element in elements:
             self.links_list.append(element.get_attribute('href'))
         return f"Ссылки со страницы собраны успешно. Ссылок в списке: {len(self.links_list)}"
@@ -56,7 +72,8 @@ class sutochno_parser():
             clickable_element = WebDriverWait(self.driver, 30).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, selector))
             )
-            clickable_element.click()
+            self.driver.execute_script("arguments[0].click();", clickable_element)
+
             return "Переход на следующую страницу совершен успешно"
             
         except TimeoutException:
@@ -64,13 +81,14 @@ class sutochno_parser():
 
     @logger
     def get_info(self):
-        # for link in (self.links_list[:5] + self.links_list[len(self.links_list) - 5:]):
         for link in self.links_list:
             self.driver.get(link)
 
-            time.sleep(4)
+            time.sleep(2)
+
+            #section-aside > aside > div > div.sc-detail-aside-price > div > span.sc-detail-aside-price__cost
             price_element = WebDriverWait(self.driver, 30).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "span.sc-detail-map__location-address"))
+                EC.presence_of_element_located((By.CSS_SELECTOR, "#section-aside > aside > div > div.sc-detail-aside-price > div > span.sc-detail-aside-price__cost"))
             )
 
             elements = self.driver.find_elements(By.CSS_SELECTOR, "span.sc-detail-params__item")
@@ -118,4 +136,5 @@ class sutochno_parser():
     def to_csv(self):
         df = pd.DataFrame(self.info_list)
         df.to_csv("sutochno_results.csv", index=False, encoding="utf-8-sig", sep=";")
+
         return("Информация успешно переведена в csv")
