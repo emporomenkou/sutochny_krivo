@@ -1,4 +1,5 @@
 import time
+import random
 import pandas as pd
 from selenium import webdriver 
 from selenium.webdriver.common.by import By
@@ -10,7 +11,22 @@ from logger_func import logger
 
 class sutochno_parser():
     @logger
-    def __init__(self):
+    def __init__ (self):
+        self.links_list = []
+        self.info_list = []
+        with open('proxy_list.txt', 'r', encoding='utf-8') as f:
+            self.proxy_list = [proxy.strip() for proxy in f.readlines()]
+
+        self.driver = webdriver.Chrome(options=self.get_chrome_options())            
+         
+
+    @logger
+    def open_page(self):
+        self.driver.get('https://sutochno.ru/front/searchapp/search?guests_adults=1&occupied=2026-10-30;2026-10-31&term=%D0%9A%D0%B0%D0%BC%D1%87%D0%B0%D1%82%D1%81%D0%BA%D0%B8%D0%B9+%D0%BA%D1%80%D0%B0%D0%B9&SW.lat=48.695403231714&SW.lng=152.05073012499992&NE.lat=66.24193467093268&NE.lng=177.89057387499994&id=19851&type=region&price&price&is_apartment=1')
+        return("Драйвер инициализирован, начальная страница открыта")
+
+    @logger
+    def get_chrome_options(self):
         options = webdriver.ChromeOptions()
 
         options.add_argument('--log-level=3') 
@@ -20,7 +36,10 @@ class sutochno_parser():
 
         ua = UserAgent()
         options.add_argument(f'user-agent={ua.random}')
-        options.add_argument('--proxy-server=120.232.115.57:17981')
+
+        # random_index = random.randint(0, len(self.proxy_list) - 1)
+        # # random_proxy = self.proxy_list[random_index]
+        # options.add_argument(f'--proxy-server={random_proxy}')
 
         # --- ОТКЛЮЧАЕМ КАРТИНКИ ДЛЯ ЭКОНОМИИ ВРЕМЕНИ (скопировал с ии, но тема вполне полезная)---
         prefs = {
@@ -28,13 +47,9 @@ class sutochno_parser():
             "profile.managed_default_content_settings.images": 2,
         }
         options.add_experimental_option("prefs", prefs)
+        return options
 
-        self.driver = webdriver.Chrome(options=options)
-
-        self.links_list = []
-        self.info_list = []
-        self.driver.get('https://sutochno.ru/front/searchapp/search?guests_adults=1&occupied=2026-10-30;2026-10-31&term=%D0%9A%D0%B0%D0%BC%D1%87%D0%B0%D1%82%D1%81%D0%BA%D0%B8%D0%B9+%D0%BA%D1%80%D0%B0%D0%B9&SW.lat=48.695403231714&SW.lng=152.05073012499992&NE.lat=66.24193467093268&NE.lng=177.89057387499994&id=19851&type=region&price&price&is_apartment=1')
-
+    
     @logger
     def accept_cookies(self):
         clickable_element = WebDriverWait(self.driver, 30).until(
@@ -43,6 +58,18 @@ class sutochno_parser():
         clickable_element.click()
         return "Файлы куки приняты успешно"
 
+    @logger
+    def reinit_driver(self):
+        if self.driver:
+            try:
+                self.driver.quit()
+            except Exception:
+                pass
+        
+        options = self.get_chrome_options()
+        self.driver = webdriver.Chrome(options=options)
+        return "Браузер успешно переоткрыт с новыми прокси и useragent"
+    
     @logger
     def get_links_on_the_page(self):
 
@@ -130,6 +157,9 @@ class sutochno_parser():
                 "Кол-во кроватей" : bed, 
                 "Ссылка" : link
             })
+
+            if len(self.info_list) % 10 == 0:
+                self.reinit_driver()
         return f"Информация из каждой ссылки успешно собрана в список словарей. Словарей: {len(self.info_list)}"
 
     @logger

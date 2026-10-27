@@ -1,14 +1,42 @@
-__init__ - 33.41 сек. - Результат: None
-accept_cookies - 0.11 сек. - Результат: Файлы куки приняты успешно
-get_links_on_the_page - 2.82 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 30
+get_chrome_options - 0.07 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F37A70>
+__init__ - 33.09 сек. - Результат: None
+open_page - 6.10 сек. - Результат: Драйвер инициализирован, начальная страница открыта
+accept_cookies - 3.18 сек. - Результат: Файлы куки приняты успешно
+get_links_on_the_page - 4.42 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 30
+go_to_the_next_page - 0.35 сек. - Результат: Переход на следующую страницу совершен успешно
+get_links_on_the_page - 5.76 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 60
 go_to_the_next_page - 0.21 сек. - Результат: Переход на следующую страницу совершен успешно
-get_links_on_the_page - 6.31 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 60
-go_to_the_next_page - 0.11 сек. - Результат: Переход на следующую страницу совершен успешно
-get_links_on_the_page - 5.32 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 90
-go_to_the_next_page - 0.05 сек. - Результат: Переход на следующую страницу совершен успешно
-get_links_on_the_page - 5.22 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 120
-go_to_the_next_page - 0.04 сек. - Результат: Переход на следующую страницу совершен успешно
-get_links_on_the_page - 5.10 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 134
-go_to_the_next_page - 30.04 сек. - Результат: False
-get_info - 1275.67 сек. - Результат: Информация из каждой ссылки успешно собрана в список словарей. Словарей: 134
-to_csv - 0.02 сек. - Результат: Информация успешно переведена в csv
+get_links_on_the_page - 6.33 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 90
+go_to_the_next_page - 0.21 сек. - Результат: Переход на следующую страницу совершен успешно
+get_links_on_the_page - 4.87 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 120
+go_to_the_next_page - 0.16 сек. - Результат: Переход на следующую страницу совершен успешно
+get_links_on_the_page - 4.18 сек. - Результат: Ссылки со страницы собраны успешно. Ссылок в списке: 122
+go_to_the_next_page - 30.10 сек. - Результат: False
+get_chrome_options - 0.14 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495E94380>
+reinit_driver - 3.71 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.11 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8F710>
+reinit_driver - 4.26 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.06 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8F770>
+reinit_driver - 3.99 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.06 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8F020>
+reinit_driver - 4.15 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.05 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8F140>
+reinit_driver - 4.08 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.09 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8D4F0>
+reinit_driver - 4.02 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.09 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8D5B0>
+reinit_driver - 3.83 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.05 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8E9C0>
+reinit_driver - 3.65 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.12 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8D370>
+reinit_driver - 4.12 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.05 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E4957F35C0>
+reinit_driver - 3.82 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.08 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8FCB0>
+reinit_driver - 4.32 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.05 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E4FFD17EF0>
+reinit_driver - 3.91 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_chrome_options - 0.05 сек. - Результат: <selenium.webdriver.chrome.options.Options object at 0x000001E495F8F8C0>
+reinit_driver - 3.60 сек. - Результат: Браузер успешно переоткрыт с новыми прокси и useragent
+get_info - 939.84 сек. - Результат: Информация из каждой ссылки успешно собрана в список словарей. Словарей: 122
+to_csv - 0.06 сек. - Результат: Информация успешно переведена в csv

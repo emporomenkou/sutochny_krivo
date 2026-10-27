@@ -7,11 +7,13 @@ def main():
     clean_logs()
 
     parser = sutochno_parser()
+    parser.open_page()
     parser.accept_cookies()
     while True:
         parser.get_links_on_the_page()
         if not parser.go_to_the_next_page():
             break
+    parser.reinit_driver()
     parser.get_info()
     
     parser.to_csv()
